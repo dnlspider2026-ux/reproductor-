@@ -1,0 +1,20 @@
+FERRARI MP3 VIDEO — proyecto web/PWA
+
+CONTENIDO
+- index.html: reproductor MP3/MP4, biblioteca local, controles y ecualizador.
+- manifest.webmanifest y sw.js: base para instalar como aplicación web (PWA).
+- icon.svg: icono rojo con la letra F y el nombre Ferrari.
+
+USO EN ANDROID
+1. Extrae el ZIP en el teléfono.
+2. Abre index.html con un navegador compatible para probarlo. La selección de archivos locales funciona en el navegador.
+3. Para instalar como PWA con funcionamiento sin conexión, los archivos deben estar publicados en una dirección HTTPS. Luego abre esa dirección en Chrome y usa el menú "Instalar aplicación" o "Añadir a pantalla principal".
+
+IMPORTANTE SOBRE EL APK
+Este ZIP es el proyecto web, NO es un APK. Para generar un APK hace falta empaquetarlo con un servicio/herramienta de compilación compatible. No se incluye un APK falso ni se afirma que ya esté compilado.
+
+NOTAS
+- Las luces y los anillos del parlante pulsan con la energía de los graves y el nivel general del audio reproducido en el reproductor MP3. Pulsa Reproducir para activar el análisis de sonido.
+- El navegador puede pedir que toques Reproducir antes de activar el audio.
+- "Surround" y "Eco" son efectos de procesamiento aproximados mediante Web Audio; el resultado depende del navegador y del dispositivo.
+- El emblema incluido es una F estilizada de demostración, no el logotipo oficial de Ferrari.

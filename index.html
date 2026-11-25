@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080000">
+<meta name="description" content="FERRARI MP3 VIDEO - reproductor multimedia rojo neón">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>FERRARI MP3 VIDEO</title>
+<style>
+:root{--red:#ff1717;--red2:#8b0000;--bg:#070303;--panel:#130606;--line:#ff2929}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 0%,#3b0000 0,#100202 38%,#030202 100%);color:#fff;font-family:Arial,Helvetica,sans-serif;min-height:100vh}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(115deg,transparent 0 45px,rgba(255,0,0,.035) 46px 48px);animation:rain 8s linear infinite}
+@keyframes rain{to{background-position:0 300px}}
+header{text-align:center;padding:22px 12px 12px;position:relative}
+h1{margin:0;color:#fff;letter-spacing:3px;font-size:clamp(22px,5vw,36px);text-shadow:0 0 8px var(--red),0 0 22px var(--red)}
+.subtitle{color:#ff8a8a;font-size:11px;letter-spacing:4px;margin-top:7px}
+main{width:min(900px,94vw);margin:auto;padding:8px 0 34px;position:relative}
+.panel{background:linear-gradient(145deg,rgba(35,4,4,.94),rgba(5,2,2,.97));border:1px solid #a90000;border-radius:18px;padding:16px;margin:12px 0;box-shadow:0 0 9px #ff171766,inset 0 0 18px #ff17171c}
+.speaker-wrap{display:flex;justify-content:center;padding:12px 0 18px}
+.speaker{width:min(76vw,330px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;position:relative;background:radial-gradient(circle,#250000 0 28%,#080202 29% 42%,#390000 43% 47%,#080202 48% 60%,#420000 61% 64%,#080202 65%);box-shadow:0 0 12px #ff1717,0 0 32px #f00,inset 0 0 25px #f00;transition:filter .08s,transform .08s}
+.speaker:before,.speaker:after{content:"";position:absolute;border:2px solid #ff1b1b;border-radius:50%;inset:7%;opacity:calc(.45 + var(--pulse,.18)*.55);box-shadow:0 0 calc(12px + var(--pulse,.18)*25px) #f00,inset 0 0 calc(10px + var(--pulse,.18)*18px) #f00;transition:opacity .04s,box-shadow .04s}
+.speaker:after{inset:17%;border-color:#ff3030;box-shadow:0 0 calc(18px + var(--pulse,.18)*30px) #f00}
+.speaker.active{filter:brightness(1.5);transform:scale(1.012)}
+.emblem{z-index:2;width:39%;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;flex-direction:column;background:linear-gradient(135deg,#ffdf75,#b60000 35%,#4b0000 70%,#ff2525);clip-path:polygon(8% 0,92% 0,100% 78%,50% 100%,0 78%);border:2px solid #ffd36a;filter:drop-shadow(0 0 8px #ff1717);text-align:center}
+.emblem .horse{font-size:clamp(27px,8vw,45px);line-height:1;color:#fff2d0;text-shadow:0 2px 4px #300}
+.emblem strong{font-size:clamp(9px,2.6vw,13px);letter-spacing:2px;color:#fff}
+.now{text-align:center;color:#ffbaba;font-size:13px;min-height:18px;margin:4px 0 12px}
+.controls{display:flex;flex-wrap:wrap;gap:9px;justify-content:center}
+button,.filelabel{background:linear-gradient(#390000,#130000);border:1px solid #ff3030;color:white;border-radius:11px;padding:11px 15px;font-size:14px;box-shadow:0 0 9px #ff171766;cursor:pointer}
+button:active,.filelabel:active{transform:scale(.97);background:#680000}
+button.primary{background:linear-gradient(#ff2828,#790000);font-weight:bold}
+input[type=range]{accent-color:#ff2929;width:min(260px,65vw)}
+.row{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin:10px 0}
+label{color:#ffb5b5;font-size:13px}
+h2{font-size:16px;color:#ff5555;letter-spacing:1px;margin:0 0 12px}
+#library{list-style:none;padding:0;margin:12px 0 0}
+#library li{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:9px;border-bottom:1px solid #541010;font-size:13px}
+#library li span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+video{width:100%;max-height:45vh;background:#000;border-radius:12px;border:1px solid #a90000}
+audio{width:100%;margin-top:10px;filter:sepia(1) saturate(5)}
+small{color:#d58b8b;line-height:1.5;display:block;text-align:center}
+footer{text-align:center;color:#874444;font-size:11px;padding:15px}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<header><h1>FERRARI MP3 VIDEO</h1><div class="subtitle">MULTIMEDIA • RED NEON EDITION</div></header>
+<main>
+<section class="panel">
+  <div class="speaker-wrap"><div class="speaker" id="speaker" aria-label="Parlante de luces rojas al ritmo de la música">
+    <div class="emblem"><div class="horse">♞</div><strong>FERRARI</strong></div>
+  </div></div>
+  <div class="now" id="now">Agrega una canción o un video para comenzar</div>
+  <div class="controls">
+    <button id="prev">⏮ Anterior</button><button class="primary" id="play">▶ Reproducir</button><button id="next">Siguiente ⏭</button>
+  </div>
+  <audio id="audio" controls></audio>
+</section>
+<section class="panel">
+  <h2>🎬 REPRODUCTOR DE VIDEO</h2>
+  <video id="video" controls playsinline></video>
+  <div class="row"><label class="filelabel" for="videoFiles">＋ Agregar videos</label><input class="hidden" id="videoFiles" type="file" accept="video/*" multiple></div>
+</section>
+<section class="panel">
+  <h2>🎵 BIBLIOTECA MULTIMEDIA</h2>
+  <div class="row"><label class="filelabel" for="audioFiles">＋ Agregar música MP3</label><input class="hidden" id="audioFiles" type="file" accept="audio/*" multiple></div>
+  <ul id="library"><li><span>Tu biblioteca está vacía</span></li></ul>
+</section>
+<section class="panel">
+  <h2>🎚️ SONIDO Y ECUALIZADOR</h2>
+  <div class="row"><label for="volume">Volumen</label><input id="volume" type="range" min="0" max="1" step=".01" value="1"></div>
+  <div class="row"><label for="bass">Graves</label><input id="bass" type="range" min="-12" max="12" value="0"><output id="bassVal">0 dB</output></div>
+  <div class="row"><label for="mid">Medios</label><input id="mid" type="range" min="-12" max="12" value="0"><output id="midVal">0 dB</output></div>
+  <div class="row"><label for="treble">Agudos</label><input id="treble" type="range" min="-12" max="12" value="0"><output id="trebleVal">0 dB</output></div>
+  <div class="row"><label for="echo">Eco</label><input id="echo" type="range" min="0" max="0.8" step=".01" value="0"></div>
+  <div class="row"><label for="surround">Surround</label><input id="surround" type="range" min="0" max="1" step=".01" value=".25"></div>
+  <small>Las luces del parlante reaccionan al sonido cuando la reproducción pasa por el reproductor de música.</small>
+</section>
+<footer>FERRARI MP3 VIDEO • Reproductor local para tu teléfono</footer>
+</main>
+<script>
+const audio=document.getElementById('audio'), video=document.getElementById('video'), speaker=document.getElementById('speaker');
+const files=[], urls=[]; let current=-1, ctx=null, analyser=null, source=null, bass=null, mid=null, treble=null, delay=null, feedback=null, wet=null, dry=null, splitter=null, merger=null;
+function setupAudio(){
+ if(ctx)return;
+ const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+ ctx=new AC(); analyser=ctx.createAnalyser(); analyser.fftSize=256;
+ source=ctx.createMediaElementSource(audio);
+ bass=ctx.createBiquadFilter();bass.type='lowshelf';bass.frequency.value=180;
+ mid=ctx.createBiquadFilter();mid.type='peaking';mid.frequency.value=1000;mid.Q.value=1;
+ treble=ctx.createBiquadFilter();treble.type='highshelf';treble.frequency.value=4500;
+ delay=ctx.createDelay(1);feedback=ctx.createGain();wet=ctx.createGain();dry=ctx.createGain();
+ delay.delayTime.value=.22;feedback.gain.value=.22;wet.gain.value=0;dry.gain.value=1;
+ source.connect(bass);bass.connect(mid);mid.connect(treble);
+ treble.connect(dry);dry.connect(analyser);analyser.connect(ctx.destination);
+ treble.connect(delay);delay.connect(feedback);feedback.connect(delay);delay.connect(wet);wet.connect(ctx.destination);
+}
+let visualFrame = 0;
+function animate(){
+  requestAnimationFrame(animate);
+  if(!analyser) {
+    // Gentle idle glow until the user starts MP3 playback.
+    speaker.style.setProperty('--pulse', '0.18');
+    speaker.style.filter = 'brightness(1.08) drop-shadow(0 0 12px #ff0000)';
+    return;
+  }
+  const data = new Uint8Array(analyser.frequencyBinCount);
+  analyser.getByteFrequencyData(data);
+
+  // Use a bass-heavy band, plus a little overall energy, to make the beat visible.
+  let bassEnergy = 0, overall = 0;
+  const bassEnd = Math.min(18, data.length);
+  for(let i=1;i<bassEnd;i++) bassEnergy += data[i];
+  bassEnergy /= Math.max(1, bassEnd-1);
+  for(let i=1;i<data.length;i++) overall += data[i];
+  overall /= Math.max(1, data.length-1);
+
+  const level = Math.min(1, Math.max(bassEnergy/150, overall/210));
+  const pulse = 0.12 + level * 0.88;
+  speaker.style.setProperty('--pulse', pulse.toFixed(3));
+  speaker.style.filter = `brightness(${1 + level*1.25}) drop-shadow(0 0 ${10 + level*34}px #ff0000)`;
+  speaker.style.transform = `scale(${1 + level*0.045})`;
+  speaker.classList.toggle('active', level > 0.12);
+}
+animate();
+function addAudio(list){for(const f of list){if(!f.type.startsWith('audio/'))continue;files.push({name:f.name,url:URL.createObjectURL(f)});urls.push(files[files.length-1].url)}render();if(current<0&&files.length)load(0)}
+function render(){const ul=document.getElementById('library');ul.innerHTML='';if(!files.length){ul.innerHTML='<li><span>Tu biblioteca está vacía</span></li>';return}files.forEach((f,i)=>{const li=document.createElement('li'),s=document.createElement('span'),b=document.createElement('button');s.textContent=(i+1)+'. '+f.name;b.textContent='▶';b.onclick=()=>load(i,true);li.append(s,b);ul.append(li)})}
+function load(i,play=false){if(i<0||i>=files.length)return;current=i;audio.src=files[i].url;document.getElementById('now').textContent=files[i].name; if(play)start()}
+async function start(){setupAudio();if(ctx&&ctx.state==='suspended')await ctx.resume();try{await audio.play();document.getElementById('play').textContent='Ⅱ Pausar'}catch(e){}}
+audio.addEventListener('pause',()=>document.getElementById('play').textContent='▶ Reproducir');
+audio.addEventListener('ended',()=>{if(files.length)load((current+1)%files.length,true)});
+document.getElementById('play').onclick=()=>{if(audio.paused)start();else audio.pause()};
+document.getElementById('prev').onclick=()=>{if(files.length)load((current-1+files.length)%files.length,true)};
+document.getElementById('next').onclick=()=>{if(files.length)load((current+1)%files.length,true)};
+document.getElementById('audioFiles').onchange=e=>addAudio(e.target.files);
+document.getElementById('videoFiles').onchange=e=>{const f=e.target.files[0];if(f){video.src=URL.createObjectURL(f);video.play().catch(()=>{})}};
+document.getElementById('volume').oninput=e=>audio.volume=+e.target.value;
+for(const [id,node,out] of [['bass','bass','bassVal'],['mid','mid','midVal'],['treble','treble','trebleVal']]){
+ document.getElementById(id).oninput=e=>{setupAudio();if(node==='bass'&&bass)bass.gain.value=+e.target.value;if(node==='mid'&&mid)mid.gain.value=+e.target.value;if(node==='treble'&&treble)treble.gain.value=+e.target.value;document.getElementById(out).textContent=e.target.value+' dB'};
+}
+document.getElementById('echo').oninput=e=>{setupAudio();if(wet)wet.gain.value=+e.target.value};
+document.getElementById('surround').oninput=e=>{setupAudio();if(wet)wet.gain.value=Math.max(wet.gain.value,+e.target.value*.18)};
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body></html>
